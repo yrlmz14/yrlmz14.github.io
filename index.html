@@ -34,14 +34,19 @@
   </script>
 
   <link rel="stylesheet" href="/style.css">
+  <script src="/main.js" defer></script>
 </head>
 <body>
   <header>
     <h1><a href="/">Okan Yorulmaz</a></h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
-    </nav>
+    <div class="nav-container">
+      <nav>
+        <a href="/">Blog</a>
+        <a href="/projects.html">Projects</a>
+        <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀️</button>
+    </div>
   </header>
 
   <main>
@@ -49,6 +54,10 @@
       <h2>Welcome 👋</h2>
       <p>I'm Okan, exploring systems engineering, embedded devices, and software development. Here are my technical writeups and project logs.</p>
     </section>
+
+    <div class="search-box">
+      <input type="text" id="search-input" class="search-input" placeholder="🔍 Search articles by title, tag, or keyword..." aria-label="Search articles">
+    </div>
 
     <section>
       <h2>Recent Posts</h2>
@@ -72,6 +81,12 @@
   </main>
 
   <footer>
+    <div class="footer-links">
+      <a href="/">Blog</a> •
+      <a href="/projects.html">Projects</a> •
+      <a href="/rss.xml">RSS Feed</a> •
+      <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
+    </div>
     <p>
       © 2026 Okan Yorulmaz • Hosted on GitHub Pages
       <span style="display: block; margin-top: 8px;">

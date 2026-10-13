@@ -31,14 +31,21 @@
   </script>
 
   <link rel="stylesheet" href="/style.css">
+  <script src="/main.js" defer></script>
 </head>
 <body>
+  <div id="reading-progress"></div>
+
   <header>
     <h1><a href="/">Okan Yorulmaz</a></h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
-    </nav>
+    <div class="nav-container">
+      <nav>
+        <a href="/">Blog</a>
+        <a href="/projects.html">Projects</a>
+        <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀️</button>
+    </div>
   </header>
 
   <main>
@@ -70,10 +77,36 @@ python -m http.server 8000</code></pre>
       <p>I will be documenting technical experiments, embedded devices, robotics, and automation projects here. Stay tuned!</p>
     </article>
 
-    <p><a href="/">← Back to all posts</a></p>
+    <div class="comments-section">
+      <h3>💬 Discussion & Comments</h3>
+      <p style="color: var(--meta); font-size: 0.9rem;">Join the conversation via GitHub Discussions:</p>
+      <script src="https://giscus.app/client.js"
+        data-repo="yrlmz14/yrlmz14.github.io"
+        data-repo-id=""
+        data-category="Announcements"
+        data-category-id=""
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+      </script>
+    </div>
+
+    <p style="margin-top: 2rem;"><a href="/">← Back to all posts</a></p>
   </main>
 
   <footer>
+    <div class="footer-links">
+      <a href="/">Blog</a> •
+      <a href="/projects.html">Projects</a> •
+      <a href="/rss.xml">RSS Feed</a> •
+      <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
+    </div>
     <p>© 2026 Okan Yorulmaz • Hosted on GitHub Pages</p>
   </footer>
 </body>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Okan Yorulmaz | Tech Blog</title>
+    <link>https://yrlmz14.github.io/</link>
+    <description>Technical blog and homelab writeups by Okan Yorulmaz.</description>
+    <language>en</language>
+    <atom:link href="https://yrlmz14.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Hello World: Building a Lightweight Homelab Tech Blog</title>
+      <link>https://yrlmz14.github.io/posts/hello-world.html</link>
+      <guid>https://yrlmz14.github.io/posts/hello-world.html</guid>
+      <pubDate>2026-10-12</pubDate>
+      <description>Architecting an ultra-resource-efficient tech blog stack, exploring static hosting, custom domains, and low-footprint dev workflows.</description>
+    </item>
+  </channel>
+</rss>

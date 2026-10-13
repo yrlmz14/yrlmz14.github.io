@@ -9,6 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent
 POSTS_DIR = BASE_DIR / "posts"
 INDEX_FILE = BASE_DIR / "index.html"
 SITEMAP_FILE = BASE_DIR / "sitemap.xml"
+RSS_FILE = BASE_DIR / "rss.xml"
 
 POST_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
@@ -43,14 +44,21 @@ POST_TEMPLATE = """<!DOCTYPE html>
   </script>
 
   <link rel="stylesheet" href="/style.css">
+  <script src="/main.js" defer></script>
 </head>
 <body>
+  <div id="reading-progress"></div>
+
   <header>
     <h1><a href="/">Okan Yorulmaz</a></h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
-    </nav>
+    <div class="nav-container">
+      <nav>
+        <a href="/">Blog</a>
+        <a href="/projects.html">Projects</a>
+        <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀️</button>
+    </div>
   </header>
 
   <main>
@@ -66,10 +74,36 @@ POST_TEMPLATE = """<!DOCTYPE html>
       {content_html}
     </article>
 
-    <p><a href="/">← Back to all posts</a></p>
+    <div class="comments-section">
+      <h3>💬 Discussion & Comments</h3>
+      <p style="color: var(--meta); font-size: 0.9rem;">Join the conversation via GitHub Discussions:</p>
+      <script src="https://giscus.app/client.js"
+        data-repo="yrlmz14/yrlmz14.github.io"
+        data-repo-id=""
+        data-category="Announcements"
+        data-category-id=""
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+      </script>
+    </div>
+
+    <p style="margin-top: 2rem;"><a href="/">← Back to all posts</a></p>
   </main>
 
   <footer>
+    <div class="footer-links">
+      <a href="/">Blog</a> •
+      <a href="/projects.html">Projects</a> •
+      <a href="/rss.xml">RSS Feed</a> •
+      <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
+    </div>
     <p>© 2026 Okan Yorulmaz • Hosted on GitHub Pages</p>
   </footer>
 </body>
@@ -85,14 +119,12 @@ def md_to_html(md_text):
     html = []
     lines = md_text.splitlines()
     in_code_block = False
-    code_lang = ""
     code_lines = []
 
     for line in lines:
         if line.strip().startswith("```"):
             if not in_code_block:
                 in_code_block = True
-                code_lang = line.strip().lstrip("`")
                 code_lines = []
             else:
                 in_code_block = False
@@ -117,7 +149,6 @@ def md_to_html(md_text):
         elif stripped.startswith("- "):
             html.append(f"<li>{stripped[2:]}</li>")
         else:
-            # Inline formatting
             p = stripped
             p = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', p)
             p = re.sub(r'\*(.*?)\*', r'<em>\1</em>', p)
@@ -140,7 +171,7 @@ def create_new_post(title):
 
     content = f"""---
 title: {title}
-description: A short summary of your article for Google preview.
+description: A short summary of your article for Google and social previews.
 date: {today.strftime('%Y-%m-%d')}
 tags: homelab, projects, tutorial
 ---
@@ -161,12 +192,16 @@ print("Hello from Okan!")
 """
     md_file.write_text(content, encoding="utf-8")
     print(f"Created new post draft: {md_file}")
-    print(f"Edit this file, then run: python publish.py")
+    print(f"Edit this file, then run: python publish.py --push")
 
 def build_all_posts():
     POSTS_DIR.mkdir(parents=True, exist_ok=True)
     post_cards = []
-    urls_for_sitemap = [("https://yrlmz14.github.io/", datetime.now().strftime("%Y-%m-%d"), "1.0")]
+    rss_items = []
+    urls_for_sitemap = [
+        ("https://yrlmz14.github.io/", datetime.now().strftime("%Y-%m-%d"), "1.0"),
+        ("https://yrlmz14.github.io/projects.html", datetime.now().strftime("%Y-%m-%d"), "0.9")
+    ]
 
     md_files = sorted(POSTS_DIR.glob("*.md"), key=lambda f: f.stat().st_mtime, reverse=True)
 
@@ -174,7 +209,6 @@ def build_all_posts():
         slug = md_file.stem
         raw = md_file.read_text(encoding="utf-8")
         
-        # Parse frontmatter
         title = slug
         description = "Tech writeup by Okan Yorulmaz"
         date_str = datetime.fromtimestamp(md_file.stat().st_mtime).strftime("%B %d, %Y")
@@ -206,7 +240,6 @@ def build_all_posts():
         word_count = len(body_md.split())
         read_time = max(1, round(word_count / 180))
 
-        # Output HTML
         out_html = POST_TEMPLATE.format(
             title=title,
             description=description,
@@ -235,10 +268,14 @@ def build_all_posts():
       </div>"""
         post_cards.append(post_card)
         urls_for_sitemap.append((f"https://yrlmz14.github.io/posts/{slug}.html", iso_date, "0.8"))
-
-    # Also keep existing hello-world.html if no hello-world.md exists
-    if not (POSTS_DIR / "hello-world.md").exists() and (POSTS_DIR / "hello-world.html").exists():
-        urls_for_sitemap.append(("https://yrlmz14.github.io/posts/hello-world.html", "2026-10-12", "0.8"))
+        
+        rss_items.append(f"""    <item>
+      <title>{title}</title>
+      <link>https://yrlmz14.github.io/posts/{slug}.html</link>
+      <guid>https://yrlmz14.github.io/posts/{slug}.html</guid>
+      <pubDate>{iso_date}</pubDate>
+      <description>{description}</description>
+    </item>""")
 
     # Update index.html
     if INDEX_FILE.exists() and post_cards:
@@ -256,6 +293,21 @@ def build_all_posts():
     sitemap_lines.append('</urlset>')
     SITEMAP_FILE.write_text("\n".join(sitemap_lines), encoding="utf-8")
     print("Updated: sitemap.xml with latest URLs.")
+
+    # Update rss.xml
+    rss_content = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Okan Yorulmaz | Tech Blog</title>
+    <link>https://yrlmz14.github.io/</link>
+    <description>Technical blog and homelab writeups by Okan Yorulmaz.</description>
+    <language>en</language>
+    <atom:link href="https://yrlmz14.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+{chr(10).join(rss_items)}
+  </channel>
+</rss>"""
+    RSS_FILE.write_text(rss_content, encoding="utf-8")
+    print("Updated: rss.xml RSS feed.")
 
 def git_push():
     try:

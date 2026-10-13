@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects & Homelab | Okan Yorulmaz</title>
+  
+  <meta name="description" content="Hardware projects, homelab architecture, and software development portfolio by Okan Yorulmaz.">
+  <meta name="author" content="Okan Yorulmaz">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://yrlmz14.github.io/projects.html">
+
+  <link rel="stylesheet" href="/style.css">
+  <script src="/main.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1><a href="/">Okan Yorulmaz</a></h1>
+    <div class="nav-container">
+      <nav>
+        <a href="/">Blog</a>
+        <a href="/projects.html">Projects</a>
+        <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀️</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Homelab & Projects 🛠️</h2>
+      <p>A collection of hardware experiments, self-hosted services, and code repositories I maintain.</p>
+    </section>
+
+    <section>
+      <h2>Active Hardware & Nodes</h2>
+
+      <div class="project-card">
+        <h2>🥧 Raspberry Pi Zero 2 W Node</h2>
+        <div class="post-meta">
+          <span>Quad-core 64-bit ARM Cortex-A53 • 512 MB RAM • Raspberry Pi OS Lite</span>
+        </div>
+        <p>A low-power (~1 Watt) headless node running continuous homelab services:</p>
+        <ul>
+          <li><strong>Tailscale Mesh VPN:</strong> Remote secure access from anywhere (MagicDNS node: <code>raspberrypi</code>).</li>
+          <li><strong>Playit.gg Ingress:</strong> TCP/UDP tunnel relay.</li>
+          <li><strong>Nginx Server:</strong> High-performance static web server on port 80.</li>
+        </ul>
+        <div>
+          <span class="tag">#hardware</span>
+          <span class="tag">#tailscale</span>
+          <span class="tag">#linux</span>
+        </div>
+      </div>
+
+      <h2>Code Projects</h2>
+
+      <div class="project-card">
+        <h2><a href="https://github.com/yrlmz14/yrlmz14.github.io" target="_blank" rel="noopener">🌐 Personal Tech Blog (yrlmz14.github.io)</a></h2>
+        <p>Ultra-lightweight, zero-framework static tech blog. Features client-side live search, dark/light mode toggle, 1-click code copying, real-time hits.sh view counting, and instant Markdown publishing.</p>
+        <div>
+          <span class="tag">#html5</span>
+          <span class="tag">#css3</span>
+          <span class="tag">#github-pages</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Blog</a> •
+      <a href="/projects.html">Projects</a> •
+      <a href="/rss.xml">RSS Feed</a> •
+      <a href="https://github.com/yrlmz14" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p>© 2026 Okan Yorulmaz • Hosted on GitHub Pages</p>
+  </footer>
+</body>
+</html>

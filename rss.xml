@@ -7,6 +7,13 @@
     <language>en</language>
     <atom:link href="https://yrlmz14.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
+      <title>my-new-post-title</title>
+      <link>https://yrlmz14.github.io/posts/my-new-post-title.html</link>
+      <guid>https://yrlmz14.github.io/posts/my-new-post-title.html</guid>
+      <pubDate>2026-11-01</pubDate>
+      <description>Tech writeup by Okan Yorulmaz</description>
+    </item>
+    <item>
       <title>Hello World: Building a Lightweight Homelab Tech Blog</title>
       <link>https://yrlmz14.github.io/posts/hello-world.html</link>
       <guid>https://yrlmz14.github.io/posts/hello-world.html</guid>

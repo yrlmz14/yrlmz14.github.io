@@ -146,7 +146,7 @@ def md_to_html(md_text):
             html.append(f"<h2>{stripped[3:]}</h2>")
         elif stripped.startswith("# "):
             html.append(f"<h1>{stripped[2:]}</h1>")
-        elif stripped.startswith("- "):
+        elif stripped.startswith("- ") or stripped.startswith("* "):
             html.append(f"<li>{stripped[2:]}</li>")
         else:
             p = stripped
@@ -216,25 +216,25 @@ def build_all_posts():
         tags = []
         body_md = raw
 
-        if raw.startswith("---"):
-            parts = raw.split("---", 2)
-            if len(parts) >= 3:
-                fm = parts[1]
-                body_md = parts[2]
-                for line in fm.strip().splitlines():
-                    if ":" in line:
-                        k, v = line.split(":", 1)
-                        k, v = k.strip().lower(), v.strip()
-                        if k == "title": title = v
-                        elif k == "description": description = v
-                        elif k == "date":
-                            iso_date = v
-                            try:
-                                dt = datetime.strptime(v, "%Y-%m-%d")
-                                date_str = dt.strftime("%B %d, %Y")
-                            except: pass
-                        elif k == "tags":
-                            tags = [t.strip() for t in v.split(",") if t.strip()]
+        # Match frontmatter even with backslashes or leading whitespace
+        fm_match = re.match(r'^\s*\\?---\s*\r?\n(.*?)\r?\n\\?---\s*\r?\n(.*)', raw, re.DOTALL)
+        if fm_match:
+            fm = fm_match.group(1)
+            body_md = fm_match.group(2)
+            for line in fm.strip().splitlines():
+                if ":" in line:
+                    k, v = line.split(":", 1)
+                    k, v = k.strip().lower(), v.strip()
+                    if k == "title": title = v
+                    elif k == "description": description = v
+                    elif k == "date":
+                        iso_date = v
+                        try:
+                            dt = datetime.strptime(v, "%Y-%m-%d")
+                            date_str = dt.strftime("%B %d, %Y")
+                        except: pass
+                    elif k == "tags":
+                        tags = [t.strip() for t in v.split(",") if t.strip()]
 
         content_html = md_to_html(body_md)
         word_count = len(body_md.split())
